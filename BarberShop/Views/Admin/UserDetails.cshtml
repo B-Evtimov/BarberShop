@@ -1,0 +1,33 @@
+﻿@model ApplicationUser
+@{
+    var reservations = (List<Reservation>)ViewBag.Reservations;
+}
+
+<h2>Детайли за @Model.FullName</h2>
+
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Телефон:</strong> @Model.PhoneNumber</p>
+
+<h3>Резервации</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Фризьор</th>
+            <th>Услуга</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in reservations)
+        {
+            <tr>
+                <td>@r.Date.ToString("dd.MM HH:mm")</td>
+                <td>@r.Barber.Name</td>
+                <td>@r.Service</td>
+                <td>@r.Price лв</td>
+            </tr>
+        }
+    </tbody>
+</table>

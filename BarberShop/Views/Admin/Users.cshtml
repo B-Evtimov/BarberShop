@@ -1,0 +1,27 @@
+﻿@model List<ApplicationUser>
+
+<h2>Потребители</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Име</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.FullName</td>
+                <td>@u.Email</td>
+                <td>@u.PhoneNumber</td>
+                <td>
+                    <a href="/Admin/UserDetails/@u.Id" class="btn btn-primary btn-sm">Детайли</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

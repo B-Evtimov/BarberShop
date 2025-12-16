@@ -1,0 +1,67 @@
+﻿@model List<Reservation>
+
+@{
+    var start = (DateTime)ViewBag.StartOfWeek;
+    var barbers = (List<Barber>)ViewBag.Barbers;
+    var reservations = Model;
+}
+
+<h2>Резервации за седмицата</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Час</th>
+            @for (int i = 0; i < 7; i++)
+            {
+                <th>@start.AddDays(i).ToString("dddd dd.MM")</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (var time = new TimeSpan(8, 0, 0); time < new TimeSpan(20, 0, 0); time += TimeSpan.FromMinutes(30))
+        {
+            <tr>
+                <td>@time.ToString(@"hh\:mm")</td>
+
+                @for (int day = 0; day < 7; day++)
+                {
+                    var date = start.AddDays(day).Date + time;
+
+                    var slotReservations = reservations.Where(r => r.Date == date).ToList();
+
+                    if (slotReservations.Count == barbers.Count)
+                    {
+                        <td class="bg-danger text-white text-center">Заето</td>
+                    }
+                    else
+                    {
+                        <td>
+                            <form method="post" action="/Reservations/Create">
+                                <input type="hidden" name="date" value="@date.ToString("yyyy-MM-dd HH:mm")" />
+
+                                <select name="barberId" class="form-select mb-1">
+                                    @foreach (var b in barbers)
+                                    {
+                                        if (!slotReservations.Any(r => r.BarberId == b.Id))
+                                        {
+                                            <option value="@b.Id">@b.Name</option>
+                                        }
+                                    }
+                                </select>
+
+                                <select name="service" class="form-select mb-1">
+                                    <option value="Fade">Коса фейд - 30 лв</option>
+                                    <option value="FadeBeard">Коса фейд + брада - 40 лв</option>
+                                    <option value="FadeBeardHighlights">Коса фейд + брада + кичури - 50 лв</option>
+                                </select>
+
+                                <button class="btn btn-primary btn-sm">Резервирай</button>
+                            </form>
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

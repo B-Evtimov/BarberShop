@@ -1,0 +1,31 @@
+﻿@model List<Reservation>
+
+<h2>Всички резервации</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Потребител</th>
+            <th>Фризьор</th>
+            <th>Дата</th>
+            <th>Услуга</th>
+            <th>Цена</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.User.FullName (@r.User.Email)</td>
+                <td>@r.Barber.Name</td>
+                <td>@r.Date.ToString("dd.MM HH:mm")</td>
+                <td>@r.Service</td>
+                <td>@r.Price лв</td>
+                <td>
+                    <a href="/Admin/DeleteReservation/@r.Id" class="btn btn-danger btn-sm">Изтрий</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
